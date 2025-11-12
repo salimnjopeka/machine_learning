@@ -4,12 +4,13 @@ import json
 
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
-from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder
+from sklearn.preprocessing import MinMaxScaler, OrdinalEncoder, OneHotEncoder
 from sklearn.metrics import accuracy_score, confusion_matrix, mean_absolute_error, mean_squared_error, r2_score
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
 import xgboost as xgb
+from sklearn.compose import ColumnTransformer
 
 
 import matplotlib.pyplot as plt
@@ -46,6 +47,10 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_
 
 print('x_train table:\n', x_train)
 print('x_test table:\n', x_test)
+
+# Encoding categorical features
+ct = ColumnTransformer(transformers=[('encoder', OneHotEncoder(), [1,2,3])], remainder='passthrough')
+x = np.array(ct.fit_transform(x))
 
 Encoder = OrdinalEncoder()
 dt = data.copy()
